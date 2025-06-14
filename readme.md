@@ -61,9 +61,10 @@ Example (label `.txt`):
 path: data
 train: images/train
 val: images/val
-
-nc: 1
-names: ['helmet']
+names:
+  0: With Helmet
+  1: Without Helmet
+  2: Head
 ```
 
 ---
@@ -74,46 +75,12 @@ To train the model:
 
 ```python
 from ultralytics import YOLO
-
-model = YOLO('yolov8n.pt')  # or yolov8s.pt for better accuracy
-model.model.names = ['helmet']  # optional, for clarity
-model.train(data='data.yaml', epochs=25, imgsz=640)
+model = YOLO('yolov8n.yaml')
+model.model.nc = 3
+model.model.names = ['With Helmet', 'Without Helmet', 'Head']
+# Now train it with your dataset
+model.train(data='data/data.yaml', epochs=25, imgsz=640)
 ```
-
----
-
-### Inference
-
-```python
-results = model('path/to/image.jpg', show=True)
-```
-
----
-
-###  Cleaning Labels (if needed)
-
-To force all class labels to be `0`, run this script:
-
-```python
-import os
-
-label_dir = 'data/labels'
-
-for root, dirs, files in os.walk(label_dir):
-    for file in files:
-        if file.endswith('.txt'):
-            path = os.path.join(root, file)
-            with open(path, 'r') as f:
-                lines = f.readlines()
-            with open(path, 'w') as f:
-                for line in lines:
-                    parts = line.strip().split()
-                    if parts:
-                        parts[0] = '0'
-                        f.write(' '.join(parts) + '\n')
-```
-
----
 
 ###  Author
 
