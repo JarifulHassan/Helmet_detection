@@ -45,6 +45,7 @@ pip install ultralytics opencv-python
 
 * Annotation format: **YOLO** (each line: `class x_center y_center width height`)
 * All bounding boxes are labeled with **class `0`** (helmet).
+* * All bounding boxes are labeled with **class `1`** (without helmet).
 
 Example (label `.txt`):
 
